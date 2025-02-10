@@ -4,6 +4,7 @@ import logging
 import os
 import hashlib
 import time
+# from . import exceptions
 
 
 logging.basicConfig(level=logging.INFO, filename='synch_info.log', filemode='w', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', datefmt='%d-%m-%y %H:%M:%S', encoding="utf-8")
@@ -39,7 +40,25 @@ def hash_file(file_name):
             hash.update(chunk)
     return hash.hexdigest()
 
-sync_time = int(sys.argv[3])
+def validate_sync_time(value):
+    try:
+        sync_time = int(value)
+        if sync_time <= 0:
+            raise ValueError
+        return sync_time
+    except (ValueError, IndexError):
+        print("The time value must be a number and must not be less than or equal to 0.")
+        sys.exit(1)
+
+if len(sys.argv) < 4:
+    print("Usage: python main.py <source_folder> <replica_folder> <sync_time>")
+    sys.exit(1)
+
+sync_time = validate_sync_time(sys.argv[3])
+print(f"Synchronization will run every {sync_time} seconds.")
+
+
+
 
 while True:
     if __name__ == "__main__":
