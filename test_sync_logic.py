@@ -81,9 +81,15 @@ class TestSyncFunctionality(unittest.TestCase):
             check_folder = ChangeFolderStatus(source, replica)
 
             source_file = os.path.join(source, "test.txt")
-            check_folder.create(source_file)
+            replica_file = os.path.join(replica, "test.txt")
 
-            self.assertTrue(os.path.exists(source_file))
+            with open(source_file, "w") as f:
+                f.write("test data")
+
+            check_folder.create("test.txt")
+
+            self.assertTrue(os.path.exists(replica_file))
+            self.assertEqual(hash_file(source_file), hash_file(replica_file))
 
     def test_delete_missing_files(self):
         with tempfile.TemporaryDirectory() as source, tempfile.TemporaryDirectory() as replica:

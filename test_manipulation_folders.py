@@ -17,3 +17,7 @@ class ChangeFolderTest(unittest.TestCase):
             ChangeFolderStatus("test_source", None)
         with self.assertRaises(ValueError):
             ChangeFolderStatus(None, None)
+
+
+if __name__ == '__main__':
+    unittest.main()
